@@ -20,10 +20,9 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        candidatos.addAll(CandidatoDAO(this).obterLista())
-        candidatos.sortedBy { candidato -> candidato.votos.toInt() }
+        val comparar = kotlin.Comparator { candidato: Candidato, candidato2: Candidato -> candidato2.votos.toInt() - candidato.votos.toInt()}
+        candidatos.addAll(CandidatoDAO(this).obterLista().sortedWith((comparar)))
         candidatosFilter.addAll(candidatos)
-        candidatosFilter.sortedBy { candidato -> candidato.votos.toInt() }
         val adapter = CandidatoAdapter(this, candidatosFilter)
         listView.adapter = adapter
         registerForContextMenu(listView)
@@ -70,10 +69,9 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         candidatos.clear()
         candidatosFilter.clear()
-        candidatos.addAll(CandidatoDAO(this).obterLista())
-        candidatos.sortedBy { candidato -> candidato.votos.toInt() }
+        val comparar = kotlin.Comparator { candidato: Candidato, candidato2: Candidato -> candidato2.votos.toInt() - candidato.votos.toInt()}
+        candidatos.addAll(CandidatoDAO(this).obterLista().sortedWith((comparar)))
         candidatosFilter.addAll(candidatos)
-        candidatosFilter.sortedBy { candidato -> candidato.votos.toInt() }
         listView.invalidateViews()
     }
 

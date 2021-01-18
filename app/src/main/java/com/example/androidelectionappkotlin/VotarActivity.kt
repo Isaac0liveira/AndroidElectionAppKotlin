@@ -23,6 +23,7 @@ class VotarActivity : AppCompatActivity() {
                     candidatoSelecionado = c
                     votarNome.setText(c.nome)
                     votarButton.visibility = View.VISIBLE
+                    break
                 }else{
                     votarNome.setText("Candidato não encontrado")
                     votarButton.visibility = View.INVISIBLE
@@ -41,7 +42,8 @@ class VotarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_votar)
-        candidatos.addAll(CandidatoDAO(this).obterLista())
+        val comparar = kotlin.Comparator { candidato: Candidato, candidato2: Candidato -> candidato2.votos.toInt() - candidato.votos.toInt()}
+        candidatos.addAll(CandidatoDAO(this).obterLista().sortedWith((comparar)))
         votarNumero.addTextChangedListener(object : TextWatcher {
             var timeRun = false;
 
